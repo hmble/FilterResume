@@ -14,7 +14,10 @@ def getDocxText(filename):
     fullText = []
     for para in doc.paragraphs:
         fullText.append(para.text)
-    return '\n'.join(fullText)
+    original_text = '\n'.join(fullText)
+    filter_text = "\n".join([ll.rstrip() for ll in original_text.splitlines() if
+                             ll.strip()])
+    return filter_text
 
 
 def getPDFText(filename):
@@ -28,18 +31,15 @@ def getPDFText(filename):
         for page in PDFPage.create_pages(doc):
             interpreter.process_page(page)
 
-    return output_string.getvalue()
-
-
-original_text = getPDFText('./NikhilResume.pdf')
-filter_text = "\n".join([ll.rstrip() for ll in original_text.splitlines() if
-                         ll.strip()])
-
-
-def getCount(original_text, keyword):
+    original_text = output_string.getvalue()
     filter_text = "\n".join([ll.rstrip() for ll in original_text.splitlines() if
                              ll.strip()])
+
+    return filter_text
+
+
+def getCount(filter_text, keyword):
     return filter_text.count(keyword)
 
 
-print(getCount(getPDFText('./NikhilResume.pdf'), "Java"))
+print(getCount(getDocxText('sample.docx'), "Java"))
