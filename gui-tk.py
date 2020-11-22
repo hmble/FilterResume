@@ -63,6 +63,7 @@ def getCount(filter_text, keyword):
 # canvas size
 HEIGHT = 800
 WIDTH = 800
+
 root = tk.Tk()
 
 
@@ -71,7 +72,35 @@ root = tk.Tk()
 # canvas = tk.Canvas(root, height=HEIGHT, width=WIDTH)
 # canvas.pack()
 
-button = tk.Button(root, text="Resume Dir")
+e = tk.Entry(root)
+e.pack()
+
+g_filename = ""
+
+
+def print_count():
+    global g_filename
+    text = getPDFText(g_filename)
+    print(getCount(text, e.get()))
+
+
+def callback():
+    f = filedialog.askopenfile()
+
+    global g_filename
+    g_filename = f.name
+
+    # text = getPDFText(f.name)
+
+    # print(getCount(text, "Java"))
+
+
+button = tk.Button(root, text="Open file", command=callback)
 button.pack()
+
+buttonCommit = tk.Button(root, height=1, width=10, text="Print count",
+                         command=print_count)
+# command=lambda: retrieve_input() >>> just means do this when i press the button
+buttonCommit.pack()
 
 root.mainloop()
