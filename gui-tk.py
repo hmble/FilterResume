@@ -4,6 +4,7 @@ from tkinter import filedialog
 from tkinter import Text
 
 # extracting text import
+import os
 import docx
 from io import StringIO
 from pdfminer.converter import TextConverter
@@ -80,8 +81,16 @@ g_filename = ""
 
 def print_count():
     global g_filename
-    text = getPDFText(g_filename)
-    print(getCount(text, e.get()))
+    if g_filename.lower().endswith('.pdf'):
+        text = getPDFText(g_filename)
+        print(getCount(text, e.get()))
+    elif g_filename.lower().endswith(('.doc', '.docx')):
+        text = getDocxText(g_filename)
+        print(getCount(text, e.get()))
+    else:
+        # FIXME(hmble): A little but it doesn't print anything for file extension
+        # like .gitignore
+        print('{} is not supported\n'.format(os.path.splitext(g_filename)[1]))
 
 
 def callback():
