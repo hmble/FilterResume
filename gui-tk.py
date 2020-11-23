@@ -5,6 +5,7 @@ from tkinter import Text
 
 # extracting text import
 import os
+import re
 import docx
 from io import StringIO
 from pdfminer.converter import TextConverter
@@ -51,7 +52,7 @@ def getPDFText(filename):
 
 
 def getCount(filter_text, keyword):
-    return filter_text.count(keyword.lower())
+    return sum(filter_text.count(x) for x in keyword if x != '')
 
 
 # Notes
@@ -91,8 +92,11 @@ def recursive_read():
     for root, subdir, files in os.walk(dirname):
         for docs in files:
             text = get_text(os.path.join(root, docs))
-            count = getCount(text, e.get())
-            print('{}: {}'.format(docs, count))
+            keyword = re.sub(' +', ',', e.get().lower())
+            tup = tuple(map(str, keyword.split(',')))
+            count = getCount(text, tup)
+            tk.Label(frame, text='{}: {}'.format(
+                docs, count), bg="#80c1ff").pack()
 
 
 def get_text(filename):
