@@ -24,7 +24,7 @@ def getDocxText(filename):
     original_text = '\n'.join(fullText)
     filter_text = "\n".join([ll.rstrip() for ll in original_text.splitlines() if
                              ll.strip()])
-    return filter_text
+    return filter_text.lower()
 
 # Extract text from PDF files.
 
@@ -44,13 +44,13 @@ def getPDFText(filename):
     filter_text = "\n".join([ll.rstrip() for ll in original_text.splitlines() if
                              ll.strip()])
 
-    return filter_text
+    return filter_text.lower()
 
 # get keyword count
 
 
 def getCount(filter_text, keyword):
-    return filter_text.count(keyword)
+    return filter_text.count(keyword.lower())
 
 
 # Notes
