@@ -70,10 +70,12 @@ root = tk.Tk()
 
 # canvas size
 #
-# canvas = tk.Canvas(root, height=HEIGHT, width=WIDTH)
-# canvas.pack()
+canvas = tk.Canvas(root, height=HEIGHT, width=WIDTH)
+canvas.pack()
 
-e = tk.Entry(root)
+frame = tk.Frame(root, bg="#80c1ff", padx=20, pady=20)
+frame.place(relx=0.05, rely=0.05, relwidth=0.9, relheight=0.9)
+e = tk.Entry(frame, width=50)
 e.pack()
 
 dirname = ""
@@ -104,10 +106,10 @@ def get_text(filename):
         return ""
 
 
-button = tk.Button(root, text="Open directory", command=callback)
+button = tk.Button(frame, text="Open directory", command=callback)
 button.pack()
 
-buttonCommit = tk.Button(root, height=1, width=10, text="Print count",
+buttonCommit = tk.Button(frame, height=1, width=10, text="Print count",
                          command=recursive_read)
 # command=lambda: retrieve_input() >>> just means do this when i press the button
 buttonCommit.pack()
