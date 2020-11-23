@@ -88,6 +88,7 @@ def callback():
 
 
 def recursive_read():
+    ranks = []
     global dirname
     for root, subdir, files in os.walk(dirname):
         for docs in files:
@@ -95,8 +96,10 @@ def recursive_read():
             keyword = re.sub(' +', ',', e.get().lower())
             tup = tuple(map(str, keyword.split(',')))
             count = getCount(text, tup)
-            tk.Label(frame, text='{}: {}'.format(
-                docs, count), bg="#80c1ff").pack()
+            ranks.append({'name': os.path.join(root, docs), 'count': count})
+
+    ranks.sort(key=lambda i: i['count'], reverse=True)
+    tk.Label(frame, text='{}'.format(ranks[0]['name'])).pack()
 
 
 def get_text(filename):
