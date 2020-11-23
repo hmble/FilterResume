@@ -76,57 +76,41 @@ root = tk.Tk()
 e = tk.Entry(root)
 e.pack()
 
-g_filename = ""
-
-
-def print_count():
-    global g_filename
-    if g_filename.lower().endswith('.pdf'):
-        text = getPDFText(g_filename)
-        print(getCount(text, e.get()))
-    elif g_filename.lower().endswith(('.doc', '.docx')):
-        text = getDocxText(g_filename)
-        print(getCount(text, e.get()))
-    else:
-        # FIXME(hmble): A little but it doesn't print anything for file extension
-        # like .gitignore
-        print('{} is not supported\n'.format(os.path.splitext(g_filename)[1]))
+dirname = ""
 
 
 def callback():
-    f = filedialog.askopenfile()
-
-    global g_filename
-    g_filename = f.name
-
-    # text = getPDFText(f.name)
-
-    # print(getCount(text, "Java"))
+    global dirname
+    dirname = filedialog.askdirectory()
 
 
-def get_text():
-    global g_filename
-    if g_filename.lower().endswith('.pdf'):
-        text = getPDFText(g_filename)
-        print(text)
-    elif g_filename.lower().endswith(('.doc', '.docx')):
-        text = getDocxText(g_filename)
-        print(text)
+def recursive_read():
+    global dirname
+    for root, subdir, files in os.walk(dirname):
+        for docs in files:
+            text = get_text(os.path.join(root, docs))
+            count = getCount(text, e.get())
+            print('{}: {}'.format(docs, count))
+
+
+def get_text(filename):
+    if filename.lower().endswith('.pdf'):
+        text = getPDFText(filename)
+        return text
+    elif filename.lower().endswith('.docx'):
+        text = getDocxText(filename)
+        return text
     else:
-        # FIXME(hmble): A little but it doesn't print anything for file extension
-        # like .gitignore
-        print('{} is not supported\n'.format(os.path.splitext(g_filename)[1]))
+        return ""
 
 
-button = tk.Button(root, text="Open file", command=callback)
+button = tk.Button(root, text="Open directory", command=callback)
 button.pack()
 
 buttonCommit = tk.Button(root, height=1, width=10, text="Print count",
-                         command=print_count)
+                         command=recursive_read)
 # command=lambda: retrieve_input() >>> just means do this when i press the button
 buttonCommit.pack()
 
-extractText = tk.Button(root, text="Extract text", command=get_text)
-extractText.pack()
 
 root.mainloop()
