@@ -104,6 +104,20 @@ def callback():
     # print(getCount(text, "Java"))
 
 
+def get_text():
+    global g_filename
+    if g_filename.lower().endswith('.pdf'):
+        text = getPDFText(g_filename)
+        print(text)
+    elif g_filename.lower().endswith(('.doc', '.docx')):
+        text = getDocxText(g_filename)
+        print(text)
+    else:
+        # FIXME(hmble): A little but it doesn't print anything for file extension
+        # like .gitignore
+        print('{} is not supported\n'.format(os.path.splitext(g_filename)[1]))
+
+
 button = tk.Button(root, text="Open file", command=callback)
 button.pack()
 
@@ -111,5 +125,8 @@ buttonCommit = tk.Button(root, height=1, width=10, text="Print count",
                          command=print_count)
 # command=lambda: retrieve_input() >>> just means do this when i press the button
 buttonCommit.pack()
+
+extractText = tk.Button(root, text="Extract text", command=get_text)
+extractText.pack()
 
 root.mainloop()
