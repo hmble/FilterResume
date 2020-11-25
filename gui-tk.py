@@ -15,7 +15,7 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter, PDFResourceManager
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdfparser import PDFParser
-
+import csv
 # Extract text from docx file
 
 
@@ -87,7 +87,7 @@ def callback():
     global dirname
     dirname = filedialog.askdirectory()
 
-
+filtered_obj = {}
 def recursive_read():
     ranks = []
     global dirname
@@ -100,6 +100,8 @@ def recursive_read():
             ranks.append({'name': os.path.join(root, docs), 'count': count})
 
     ranks.sort(key=lambda i: i['count'], reverse=True)
+    global filtered_obj
+    filtered_obj = ranks
     src = ranks[0]['name']
     basename = os.path.basename(src)
     if not os.path.exists(os.path.join(dirname,'selected')):
@@ -120,6 +122,17 @@ def get_text(filename):
         return ""
 
 
+def download_csv():
+    global filtered_obj
+    with open('filtered_resume.csv', mode='w') as csv_file:
+        fieldnames = ['name','count']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+        writer.writeheader()
+        for obj in filtered_obj:
+            writer.writerow(obj)
+
+
 button = tk.Button(frame, text="Open directory", command=callback)
 button.pack()
 
@@ -128,5 +141,7 @@ buttonCommit = tk.Button(frame, height=1, width=10, text="Print count",
 # command=lambda: retrieve_input() >>> just means do this when i press the button
 buttonCommit.pack()
 
+csvbutton = tk.Button(frame, text="Downalod csv", command=download_csv)
+csvbutton.pack()
 
 root.mainloop()
