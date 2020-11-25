@@ -6,6 +6,7 @@ from tkinter import Text
 # extracting text import
 import os
 import re
+from shutil import copy
 import docx
 from io import StringIO
 from pdfminer.converter import TextConverter
@@ -99,6 +100,12 @@ def recursive_read():
             ranks.append({'name': os.path.join(root, docs), 'count': count})
 
     ranks.sort(key=lambda i: i['count'], reverse=True)
+    src = ranks[0]['name']
+    basename = os.path.basename(src)
+    if not os.path.exists(os.path.join(dirname,'selected')):
+        os.makedirs(os.path.join(dirname,'selected'))
+    
+    copy(src,os.path.join(dirname, 'selected', basename))
     tk.Label(frame, text='{}'.format(ranks[0]['name'])).pack()
 
 
