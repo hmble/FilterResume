@@ -134,6 +134,8 @@ def download_csv():
         for obj in filtered_obj:
             writer.writerow(obj)
 
+    mb.showinfo('Resume Filter', 'CSV file is saved at {}'.format(os.path.join(dirname, 'filtered_resume.csv')))
+
 
 button = tk.Button(frame, text="Open directory", command=callback)
 button.pack()
