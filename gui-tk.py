@@ -63,8 +63,8 @@ def getCount(filter_text, keyword):
 # Reference: https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/pdf_open_parameters.pdf
 # for this we need to use os.subprocess(exepath, arguments)
 # canvas size
-HEIGHT = 800
-WIDTH = 800
+HEIGHT = 600
+WIDTH = 600
 
 root = tk.Tk()
 
@@ -90,7 +90,7 @@ def callback():
 def recursive_read():
     ranks = []
     global dirname
-    for root, subdir, files in os.walk(dirname):
+    for root, _, files in os.walk(dirname):
         for docs in files:
             text = get_text(os.path.join(root, docs))
             keyword = re.sub(' +', ',', e.get().lower())
