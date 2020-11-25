@@ -2,6 +2,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import Text
+from tkinter import messagebox as mb
 
 # extracting text import
 import os
@@ -108,6 +109,7 @@ def recursive_read():
         os.makedirs(os.path.join(dirname,'selected'))
     
     copy(src,os.path.join(dirname, 'selected', basename))
+    mb.showinfo('Resume Filter', 'Filtered resume are copied at {}'.format(os.path.join(dirname,'selected')))
     tk.Label(frame, text='{}'.format(ranks[0]['name'])).pack()
 
 
